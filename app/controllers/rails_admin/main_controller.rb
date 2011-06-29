@@ -107,7 +107,10 @@ module RailsAdmin
       @page_name = t("admin.actions.create").capitalize + " " + @model_config.label.downcase
       @page_type = @abstract_model.pretty_name.downcase
 
-      if @object.save
+      @object.rails_admin_validation if @object.respond_to?(:rails_admin_validation)
+
+      if @object.errors.empty? && @object.save(:validate => false)
+        @object.rails_admin_saved_callback if @object.respond_to?(:rails_admin_saved_callback)
         AbstractHistory.create_history_item("Created #{@model_config.with(:object => @object).object_label}", @object, @abstract_model, _current_user)
         respond_to do |format|
           format.html do
@@ -147,7 +150,10 @@ module RailsAdmin
 
       @object.attributes = @attributes
 
-      if @object.save
+      @object.rails_admin_validation if @object.respond_to?(:rails_admin_validation)
+
+      if @object.errors.empty? && @object.save(:validate => false)
+        @object.rails_admin_saved_callback if @object.respond_to?(:rails_admin_saved_callback)
         AbstractHistory.create_update_history @abstract_model, @object, @cached_assocations_hash, associations_hash, @modified_assoc, @old_object, _current_user
         respond_to do |format|
           format.html do

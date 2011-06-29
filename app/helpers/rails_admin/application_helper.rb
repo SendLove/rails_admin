@@ -72,10 +72,12 @@ module RailsAdmin
     end
     
     # the icon shown beside every entry in the list view
-    def action_icon link, icon, text
+    def action_icon link, icon, text, new_window=nil
       icon_path = "/stylesheets/rails_admin/theme/activo/images/icons/24/%s.png"
       icon_change = "this.src='#{icon_path}'"
-      link_to link do
+      link_to_args = {}
+      link_to_args.merge!(:target => '_blank') if new_window.present?
+      link_to link, link_to_args do
         image_tag (icon_path % icon),
           :alt => text, :title => text,
           :onmouseout  => (icon_change % icon),

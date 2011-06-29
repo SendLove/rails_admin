@@ -36,7 +36,9 @@ module RailsAdmin
       end
 
       def get(id)
-        if object = model.find_by_id(id)
+        if model.respond_to?(:find_by_cached_slug) && object = model.find_by_cached_slug(id)
+          RailsAdmin::AbstractObject.new object
+        elsif object = model.find_by_id(id)
           RailsAdmin::AbstractObject.new object
         else
           nil

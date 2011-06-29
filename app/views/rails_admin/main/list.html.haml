@@ -124,7 +124,7 @@
                 %td.other.right{ :style => "#{'display: none' if @other.include?("right")}" }= link_to "...", other_right, :remote => true
                 %td.last
                   - if show_url = url_for(object) rescue nil
-                    = action_icon(show_url, :show, "Show")
+                    = action_icon(show_url, :show, "Show", :new_window_true)
                   - if can_edit
                     = action_icon(edit_path, :edit, t("admin.list.edit_action"))
                   - if authorized? :delete, @abstract_model, object
